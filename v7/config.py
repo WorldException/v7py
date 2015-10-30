@@ -3,9 +3,14 @@
 import logging
 log = logging.getLogger(__name__)
 
+import tempfile
 import os
 def getpath(filename=''):
     return os.path.join(os.path.dirname(__file__), filename)
+
+meta_dir = os.path.join(tempfile.gettempdir(), 'v7meta')
+if not os.path.exists(meta_dir):
+    os.makedirs(meta_dir)
 
 class BaseConfig:
     NAME = 'default'
@@ -17,7 +22,7 @@ class BaseConfig:
     SMB_PWD = ''
 
     # общий путь к папке с метаданными
-    PATH_META = getpath('meta')
+    PATH_META = meta_dir  # getpath('meta')
     # полный путь к папке метаданных 1С с учетом имени (для этой базы)
     PATH_META_DIR = ''
     # полный путь к моделям на py
