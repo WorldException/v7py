@@ -11,7 +11,7 @@ http://1c.alterplast.ru/1cv7md/index.html
 http://mista.ru/articles1c/hare/article.11.html
 '''
 
-from ole import OleFileIO_PL
+from olefile import OleFileIO
 import zlib
 import os
 from metadata import MDObject
@@ -59,7 +59,7 @@ class MdReader:
 
     def read(self):
         mylog.info(u'Начинаю чтение %s' % self.filename)
-        self.ole = OleFileIO_PL.OleFileIO(self.filename)
+        self.ole = OleFileIO(self.filename)
         oledirs = self.ole.listdir()
         mylog.debug('OLE_DIRS: %s' % oledirs)
         for entry in oledirs:

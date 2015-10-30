@@ -17,7 +17,7 @@ def read(fname):
 
 setup(
     name="v7py",
-    version="0.1",
+    version="0.2",
     license="GPL",
     description = '1C:Enterprice v7.7 MD reader and SQL parser',
     long_description=read("DESCRIPTION"),
@@ -33,6 +33,7 @@ setup(
         'Topic :: Software Development',
         'Topic :: Database'
     ],
-    packages=['v7'],
-    keywords='1C 1C:Enterprise 7.7 MD'
+    packages=['v7',],
+    keywords='1C 1C:Enterprise 7.7 MD',
+    requires=['olefile', 'pyodbc', 'PySmbClient']
 )

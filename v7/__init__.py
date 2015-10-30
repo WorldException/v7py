@@ -16,5 +16,5 @@ LocalMdPath = getDataPath('1Cv7.MD')
 
 from dds_parser import parse as parse_dds
 from md_reader import parse_md, extract_metadata
-from core import Application
+#from core import Application
 from db import MS_Proxy

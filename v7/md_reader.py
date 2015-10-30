@@ -109,7 +109,7 @@ UserDef
 DUMP_META=False
 
 #from ole import OleFileIO_PL_old as OleFileIO_PL
-from ole import OleFileIO_PL
+from olefile import OleFileIO
 import zlib
 import os
 import logging
@@ -169,7 +169,7 @@ def dump_stream(name, data):
 def parse_md(filename):
     mylog.info(u'Начинаю чтение %s' % filename)
     m = {'dds':[]}
-    ole = OleFileIO_PL.OleFileIO(filename)
+    ole = OleFileIO(filename)
     # mylog.debug('OLE_DIRS: %s' % ole.listdir())
     m['entry'] = {}
     for entry in ole.listdir():
