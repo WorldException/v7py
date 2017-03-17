@@ -41,6 +41,10 @@ class Base:
         # обновленияе 1с-ых файлов
         self.config.update_meta_files()
 
+    def lazy_read_config(self):
+        if self.metadata is None:
+            self.read_config()
+
     def read_config(self):
         # загрузка конфигурации
         from v7 import md_reader2
@@ -56,6 +60,7 @@ class Base:
         self.connection = mssql.MS_Proxy(self.dba_info['DB'], self.dba_info['Server'], self.dba_info['UID'], self.dba_info['PWD'])
 
     def query(self, sql):
+        self.lazy_read_config()
         return Query(sql, self)
 
     def add_query(self, **kwargs):
@@ -63,6 +68,14 @@ class Base:
         добавить метод запрос
         """
         pass
+
+    def close(self):
+        if self.connection:
+            try:
+                self.connection.close()
+            except Exception as e:
+                mylog.error(e)
+            self.connection = None
 
 class Query:
     """
@@ -107,6 +120,10 @@ class Query:
             self._sql_v7_ = prepareSQL(self.sql, self.parent.metadata)
         return self._sql_v7_ % self.params
 
+    @v7.setter
+    def v7(self, value):
+        self._sql_v7_ = value
+
     def __unicode__(self):
         return u"SQL:\n%s\nV7\n%s" % (self.sql, self.v7)
 
@@ -114,7 +131,16 @@ class Query:
         return self.__unicode__().decode('utf8')
 
     def __call__(self, *args, **kwargs):
-        return self.parent.connection.query(self.v7.encode('cp1251'))
+        """
+        выполнение запроса
+        :param args:
+        :param kwargs: параметры для запроса
+        :return:
+        """
+        if kwargs:
+            self.set_params(**kwargs)
+        return self.parent.connect().query(self.v7.encode('cp1251'))
+        # return self.parent.connection.query(self.v7.encode('cp1251'))
 
 
 def test():
